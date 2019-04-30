@@ -58,8 +58,8 @@ d-i partman/confirm_nooverwrite boolean true
 d-i apt-setup/services-select multiselect security, updates
 apt-mirror-setup apt-setup/restricted boolean true
 apt-mirror-setup apt-setup/universe boolean true
-apt-mirror-setup apt-setup/multiverse boolean true
-apt-mirror-setup apt-setup/backports boolean true
+apt-mirror-setup apt-setup/multiverse boolean false
+apt-mirror-setup apt-setup/backports boolean false
 apt-mirror-setup apt-setup/partner boolean false
 apt-setup-udeb apt-setup/enable-source-repositories boolean false
 
