@@ -1,0 +1,5 @@
+#!/bin/sh
+git clone https://github.com/ardavast/zsl.git /tmp/zsl
+ansible-playbook -c local -i localhost, /tmp/zsl/ansible/playbooks/client-test.yml
+ansible-playbook -c local -i localhost, /tmp/zsl/ansible/playbooks/client-test.yml
+rm -f /etc/rc.local
