@@ -25,5 +25,5 @@
     when: '"google-chrome-stable" not in ansible_facts.packages'
 
   - name: Install Google Chrome
-    shell: /usr/bin/dpkg -i /tmp/google-chrome-stable_current_amd64.deb && /usr/bin/apt -y install -f
+    shell: /usr/bin/dpkg -i /tmp/google-chrome-stable_current_amd64.deb || /usr/bin/apt -y install -f
     when: '"google-chrome-stable" not in ansible_facts.packages'
