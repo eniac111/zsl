@@ -4,7 +4,7 @@
   tasks:
   - name: Get package facts
     package_facts:
-      manager: "apt"
+      manager: "auto"
 
   - name: Install packages
     apt:
