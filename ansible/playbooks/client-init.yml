@@ -1,0 +1,33 @@
+- hosts: all
+  become: true
+
+  tasks:
+  - name: Get package facts
+    package_facts:
+      manager: "auto"
+
+  - name: Install packages
+    apt:
+      state: present
+      name: [
+        'git',
+        'tmux',
+        'vim',
+        'firefox',
+        'thunderbird',
+        'libreoffice',
+        'pinta',
+        'tuxpaint',
+        'wine-stable',
+        'winetricks'
+      ]
+
+  - name: Download Google Chrome
+    get_url:
+      url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      dest: /tmp/google-chrome-stable_current_amd64.deb
+    when: '"google-chrome-stable" not in ansible_facts.packages'
+
+  - name: Install Google Chrome
+    command: /usr/bin/dpkg -i /tmp/google-chrome-stable_current_amd64.deb
+    when: '"google-chrome-stable" not in ansible_facts.packages'
