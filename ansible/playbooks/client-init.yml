@@ -2,10 +2,6 @@
   become: true
 
   tasks:
-  - name: Get package facts
-    package_facts:
-      manager: "auto"
-
   - name: Install packages
     apt:
       state: present
@@ -22,12 +18,18 @@
         'winetricks'
       ]
 
+  - name: Check if Google Chrome is installed
+    shell: dpkg-query -W -f='${Status}' google-chrome-stable | grep '^install ok installed$'
+    register: chrome_installed
+    failed_when: no
+    changed_when: no
+
   - name: Download Google Chrome
     get_url:
       url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
       dest: /tmp/google-chrome-stable_current_amd64.deb
-    when: '"google-chrome-stable" not in ansible_facts.packages'
+    when: chrome_installed.rc != 0
 
   - name: Install Google Chrome
-    command: /usr/bin/dpkg -i /tmp/google-chrome-stable_current_amd64.deb
-    when: '"google-chrome-stable" not in ansible_facts.packages'
+    shell: /usr/bin/dpkg -i /tmp/google-chrome-stable_current_amd64.deb || apt -y install -f
+    when: chrome_installed.rc != 0
