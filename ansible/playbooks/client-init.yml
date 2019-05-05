@@ -33,3 +33,40 @@
   - name: Install Google Chrome
     shell: /usr/bin/dpkg -i /tmp/google-chrome-stable_current_amd64.deb || apt -y install -f
     when: chrome_installed.rc != 0
+
+  - name: Check if Viber is installed
+    shell: dpkg-query -W -f='${Status}' viber | grep '^install ok installed$'
+    register: viber_installed
+    failed_when: no
+    changed_when: no
+
+  - name: Download Viber
+    get_url:
+      url: https://download.cdn.viber.com/cdn/desktop/Linux/viber.deb
+      dest: /tmp/viber.deb
+    when: viber_installed.rc != 0
+
+  - name: Install libqt5gui5 (Viber dependency)
+    apt:
+      state: present
+      name: libqt5gui5
+
+  - name: Install Viber
+    shell: /usr/bin/dpkg -i /tmp/viber.deb || apt -y install -f
+    when: viber_installed.rc != 0
+
+  - name: Check if Skype is installed
+    shell: dpkg-query -W -f='${Status}' skypeforlinux | grep '^install ok installed$'
+    register: skype_installed
+    failed_when: no
+    changed_when: no
+
+  - name: Download Skype
+    get_url:
+      url: https://go.skype.com/skypeforlinux-64.deb
+      dest: /tmp/skypeforlinux-64.deb
+    when: skype_installed.rc != 0
+
+  - name: Install Skype
+    shell: /usr/bin/dpkg -i /tmp/skypeforlinux-64.deb || apt -y install -f
+    when: skype_installed.rc != 0
